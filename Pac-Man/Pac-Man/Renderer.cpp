@@ -14,10 +14,20 @@ Renderer::Renderer(const int screen_width, const int screen_height) : screen_wid
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         }
         else {
-            screenSurface = SDL_GetWindowSurface(window);
+            /*screenSurface = SDL_GetWindowSurface(window);
             SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0x0, 0x0, 0x0));
             SDL_UpdateWindowSurface(window);
             SDL_Event e; bool quit = false; while (quit == false) { while (SDL_PollEvent(&e)) { if (e.type == SDL_QUIT) quit = true; } }
+            */
+            // Create renderer
+            sdl_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+            if (nullptr == sdl_renderer) {
+                std::cerr << "Renderer could not be created.\n";
+                std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
+            }
+            SDL_Event e; bool quit = false; while (quit == false) { while (SDL_PollEvent(&e)) { if (e.type == SDL_QUIT) quit = true; } }
+
+            Renderer::map_init();
         }
     }
 }
@@ -25,4 +35,59 @@ Renderer::Renderer(const int screen_width, const int screen_height) : screen_wid
 Renderer::~Renderer() {
     SDL_DestroyWindow(window);
     SDL_Quit();
+}
+
+void Renderer::map_init() {
+    // Initialize the map
+    std::array<std::string, MAP_HEIGHT> map_sketch = {
+        " ################### ",
+        " #........#........# ",
+        " #o##.###.#.###.##o# ",
+        " #.................# ",
+        " #.##.#.#####.#.##.# ",
+        " #....#...#...#....# ",
+        " ####.### # ###.#### ",
+        "    #.#       #.#    ",
+        "#####.# ## ## #.#####",
+        "     .  #   #  .     ",
+        "#####.# ##### #.#####",
+        "    #.#       #.#    ",
+        " ####.# ##### #.#### ",
+        " #........#........# ",
+        " #.##.###.#.###.##.# ",
+        " #o.#..... .....#.o# ",
+        " ##.#.#.#####.#.#.## ",
+        " #....#...#...#....# ",
+        " #.######.#.######.# ",
+        " #.................# ",
+        " ################### "
+    };
+
+    // Sketch the map
+    std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map;
+	for (unsigned char a = 0; a < MAP_HEIGHT; a++) {
+		for (unsigned char b = 0; b < MAP_WIDTH; b++) {
+			switch (map_sketch[a][b]) {
+			    case '#': map[b][a] = Cell::Wall;        break;
+                default: map[b][a] = Cell::Empty;
+			}
+		}
+	}
+
+    // Draw the map
+    SDL_Rect cellShape = {0, 0, CELL_SIZE, CELL_SIZE};
+	for (unsigned char a = 0; a < MAP_WIDTH; a++) {
+		for (unsigned char b = 0; b < MAP_HEIGHT; b++) {
+			cellShape.x = CELL_SIZE * a;
+			cellShape.y = CELL_SIZE * b;
+			switch (map[a][b]) {
+			    case Cell::Wall:
+                    SDL_SetRenderDrawColor(sdl_renderer, 36, 36, 255, 255);
+                    SDL_RenderFillRect(sdl_renderer, &cellShape);
+                    //window.draw(cellShape);
+                    break;
+			}
+		}
+	}
+    std::cout << "Good job!" << '\n';
 }
