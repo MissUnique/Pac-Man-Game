@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <array>
+class Pacman;
 
 const unsigned char MAP_HEIGHT = 21;
 const unsigned char MAP_WIDTH = 21;
@@ -14,11 +15,10 @@ class Renderer {
     public:
         Renderer(const int screen_width, const int screen_height);
         ~Renderer();
-        void map_init();
+        void render(Pacman& pacman);
 
     private:
         SDL_Window* window = NULL;
-        //SDL_Surface* screenSurface = NULL;
         SDL_Renderer* sdl_renderer = NULL;
         const int screen_width;
         const int screen_height;

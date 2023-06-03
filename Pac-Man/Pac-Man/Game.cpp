@@ -19,8 +19,8 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
 
         frame_start = SDL_GetTicks();
 
-        // Render map
-        renderer.map_init();
+        // Render map + pacman
+        renderer.render(pacman_);
 
         frame_end = SDL_GetTicks();
 

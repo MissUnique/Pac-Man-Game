@@ -1,7 +1,9 @@
 #include "Renderer.h"
+#include "Pacman.h"
 #include <iostream>
 
-Renderer::Renderer(const int screen_width, const int screen_height) : screen_width(screen_width), screen_height(screen_height) {
+Renderer::Renderer(const int screen_width, const int screen_height) : 
+    screen_width(screen_width), screen_height(screen_height) {
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -29,7 +31,7 @@ Renderer::~Renderer() {
     SDL_Quit();
 }
 
-void Renderer::map_init() {
+void Renderer::render(Pacman& pacman) {
     // Clear screen
     SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(sdl_renderer);
@@ -49,7 +51,7 @@ void Renderer::map_init() {
         "##### # ##### # #####",
         "    # #       # #    ",
         " #### # ##### # #### ",
-        " #                 # ",
+        " #        P        # ",
         " #  #  ### ###  #  # ",
         " # # #   #   # # # # ",
         " # ###  #   #  ### # ",
@@ -64,12 +66,13 @@ void Renderer::map_init() {
 	for (unsigned char a = 0; a < MAP_HEIGHT; a++) {
 		for (unsigned char b = 0; b < MAP_WIDTH; b++) {
 			switch (map_sketch[a][b]) {
-			    case '#': map[b][a] = Cell::Wall;        break;
+			    case '#': map[b][a] = Cell::Wall;                               break;
+                case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
                 default: map[b][a] = Cell::Empty;
 			}
 		}
 	}
-
+    
     // Draw the map
     SDL_Rect cellShape = {0, 0, CELL_SIZE, CELL_SIZE};
 	for (unsigned char a = 0; a < MAP_WIDTH; a++) {
@@ -84,7 +87,11 @@ void Renderer::map_init() {
 			}
 		}
 	}
+
+    // Draw Pacman
+    pacman.draw(sdl_renderer);
+
     // Update Screen
     SDL_RenderPresent(sdl_renderer);
-    std::cout << "Good job!" << '\n';
+    std::cout << "Good job Azza!" << '\n';
 }
