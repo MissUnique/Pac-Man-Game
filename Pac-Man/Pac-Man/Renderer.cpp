@@ -31,11 +31,7 @@ Renderer::~Renderer() {
     SDL_Quit();
 }
 
-void Renderer::render(Pacman& pacman) {
-    // Clear screen
-    SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xFF);
-    SDL_RenderClear(sdl_renderer);
-
+std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& pacman) {
     // Initialize the map
     std::array<std::string, MAP_HEIGHT> map_sketch = {
         " ################### ",
@@ -62,17 +58,25 @@ void Renderer::render(Pacman& pacman) {
     };
 
     // Sketch the map
-    std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map;
-	for (unsigned char a = 0; a < MAP_HEIGHT; a++) {
-		for (unsigned char b = 0; b < MAP_WIDTH; b++) {
-			switch (map_sketch[a][b]) {
-			    case '#': map[b][a] = Cell::Wall;                               break;
-                case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
-                default: map[b][a] = Cell::Empty;
-			}
-		}
-	}
-    
+    std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map{};
+    for (unsigned char a = 0; a < MAP_HEIGHT; a++) {
+        for (unsigned char b = 0; b < MAP_WIDTH; b++) {
+            switch (map_sketch[a][b]) {
+            case '#': map[b][a] = Cell::Wall;                               break;
+            case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
+            default: map[b][a] = Cell::Empty;
+            }
+        }
+    }
+
+    return map;
+}
+
+void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map) {
+    // Clear screen
+    SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xFF);
+    SDL_RenderClear(sdl_renderer);
+
     // Draw the map
     SDL_Rect cellShape = {0, 0, CELL_SIZE, CELL_SIZE};
 	for (unsigned char a = 0; a < MAP_WIDTH; a++) {

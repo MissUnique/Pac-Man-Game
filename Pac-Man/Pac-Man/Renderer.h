@@ -15,7 +15,8 @@ class Renderer {
     public:
         Renderer(const int screen_width, const int screen_height);
         ~Renderer();
-        void render(Pacman& pacman);
+        std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map_init(Pacman& pacman);
+        void render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map);
 
     private:
         SDL_Window* window = NULL;
