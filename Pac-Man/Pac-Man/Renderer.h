@@ -5,8 +5,8 @@
 #include <array>
 class Pacman;
 
-const unsigned char MAP_HEIGHT = 21;
-const unsigned char MAP_WIDTH = 21;
+const int MAP_HEIGHT = 21;
+const int MAP_WIDTH = 21;
 const unsigned char CELL_SIZE = 26;
 
 enum class Cell { Door, Empty, Energizer, Pellet, Wall };

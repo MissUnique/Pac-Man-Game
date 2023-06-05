@@ -3,8 +3,9 @@
 
 #include <SDL.h>
 #include "Renderer.h"
+class Game;
 
-const unsigned char PACMAN_SPEED = 2;
+const int PACMAN_SPEED = 2;
 
 struct Position {
 	short x;
@@ -18,7 +19,7 @@ class Pacman {
 	public:
 		void draw(SDL_Renderer* renderer);
 		void set_position(short i_x, short i_y);
-		void update();
+		void update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_map);
 
 	private:
 		Position position;

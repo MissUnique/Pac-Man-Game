@@ -23,7 +23,7 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
         frame_start = SDL_GetTicks();
 
         // Move pacman
-        pacman_.update();
+        pacman_.update(map);
         // Render map + pacman
         renderer.render(pacman_, map);
 
@@ -39,4 +39,25 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
             SDL_Delay(target_frame_duration - frame_duration);
         }
     }
+}
+
+bool Game::collision(short x, short y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& game_map) {
+    // Detect the collision with a wall
+	short xf = floor(x / static_cast<float>(CELL_SIZE));
+	short xc = ceil(x / static_cast<float>(CELL_SIZE));
+	short yf = floor(y / static_cast<float>(CELL_SIZE));
+	short yc = ceil(y / static_cast<float>(CELL_SIZE));
+	for (int i = 0; i < 4; ++i) {
+		switch (i) {
+			case 0:     x = xf;		y = yf;		break;
+			case 1:     x = xc;		y = yf;		break;
+			case 2:     x = xf;		y = yc;		break;
+			case 3:     x = xc;		y = yc;		break;
+		}
+
+		if (x >= 0 && y >= 0 && x < MAP_WIDTH && y < MAP_HEIGHT)
+			if (Cell::Wall == game_map[x][y])
+				return true;
+	}
+	return false;
 }
