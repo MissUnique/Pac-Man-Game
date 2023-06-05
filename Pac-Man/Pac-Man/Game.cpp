@@ -41,7 +41,7 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
     }
 }
 
-bool Game::collision(short x, short y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& game_map) {
+bool Game::collision(short x, short y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& game_map, bool eat_dots) {
     // Detect the collision with a wall
 	short xf = floor(x / static_cast<float>(CELL_SIZE));
 	short xc = ceil(x / static_cast<float>(CELL_SIZE));
@@ -55,9 +55,15 @@ bool Game::collision(short x, short y, std::array<std::array<Cell, MAP_HEIGHT>, 
 			case 3:     x = xc;		y = yc;		break;
 		}
 
-		if (x >= 0 && y >= 0 && x < MAP_WIDTH && y < MAP_HEIGHT)
-			if (Cell::Wall == game_map[x][y])
-				return true;
+        if (x >= 0 && y >= 0 && x < MAP_WIDTH && y < MAP_HEIGHT) {
+            if (eat_dots == 0) { // Collide with a wall
+                if (Cell::Wall == game_map[x][y])
+                    return true;
+            }
+            else { // Collide with a dot
+                game_map[x][y] = Cell::Empty;
+            }
+        }
 	}
 	return false;
 }

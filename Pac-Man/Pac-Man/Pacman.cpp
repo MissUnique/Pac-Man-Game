@@ -22,10 +22,10 @@ void Pacman::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_
     // Collision detection with walls
     bool walls[4];
     Game g;
-    walls[0] = g.collision(PACMAN_SPEED + position.x, position.y, pacman_map);
-    walls[1] = g.collision(position.x, position.y - PACMAN_SPEED, pacman_map);
-    walls[2] = g.collision(position.x - PACMAN_SPEED, position.y, pacman_map);
-    walls[3] = g.collision(position.x, PACMAN_SPEED + position.y, pacman_map);
+    walls[0] = g.collision(PACMAN_SPEED + position.x, position.y, pacman_map, 0);
+    walls[1] = g.collision(position.x, position.y - PACMAN_SPEED, pacman_map, 0);
+    walls[2] = g.collision(position.x - PACMAN_SPEED, position.y, pacman_map, 0);
+    walls[3] = g.collision(position.x, PACMAN_SPEED + position.y, pacman_map, 0);
 
     // Control Pacman movement by keyboard
     const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
@@ -56,6 +56,9 @@ void Pacman::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_
     
     else if (CELL_SIZE * MAP_WIDTH <= position.x)
         position.x = PACMAN_SPEED - CELL_SIZE;
+
+    // Eat the dots
+    g.collision(position.x, position.y, pacman_map, 1);
 
     // Stop Pacman
     direction = -1;
