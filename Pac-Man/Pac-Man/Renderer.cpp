@@ -35,25 +35,25 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
     // Initialize the map
     std::array<std::string, MAP_HEIGHT> map_sketch = {
         " ################### ",
-        " #        #        # ",
-        " # ## ### # ### ## # ",
-        " #                 # ",
-        " # ## # ##### # ## # ",
-        " #    #   #   #    # ",
-        " #### ### # ### #### ",
-        "    # #       # #    ",
-        "##### # ## ## # #####",
-        "        #   #        ",
-        "##### # ##### # #####",
-        "    # #       # #    ",
-        " #### # ##### # #### ",
-        " #        P        # ",
-        " #  #  ### ###  #  # ",
-        " # # #   #   # # # # ",
-        " # ###  #   #  ### # ",
-        " # # # #   #   # # # ",
-        " # # # ### ### # # # ",
-        " #                 # ",
+        " #........#........# ",
+        " #.##.###.#.###.##.# ",
+        " #.................# ",
+        " #.##.#.#####.#.##.# ",
+        " #....#...#...#....# ",
+        " ####.###.#.###.#### ",
+        "    #.#       #.#    ",
+        "#####.# ## ## #.#####",
+        "     .  #   #  .     ",
+        "#####.# ##### #.#####",
+        "    #.#       #.#    ",
+        " ####.# ##### #.#### ",
+        " #........P........# ",
+        " #..#..###.###..#..# ",
+        " #.# #...#...#.#.#.# ",
+        " #.###..#...#..###.# ",
+        " #.#.#.#...#...#.#.# ",
+        " #.#.#.###.###.#.#.# ",
+        " #.................# ",
         " ################### "
     };
 
@@ -64,6 +64,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
             switch (map_sketch[a][b]) {
             case '#': map[b][a] = Cell::Wall;                               break;
             case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
+            case '.': map[b][a] = Cell::Dot;                                break;
             default: map[b][a] = Cell::Empty;
             }
         }
@@ -78,15 +79,26 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
     SDL_RenderClear(sdl_renderer);
 
     // Draw the map
-    SDL_Rect cellShape = {0, 0, CELL_SIZE, CELL_SIZE};
+    SDL_Rect wallShape = {0, 0, CELL_SIZE, CELL_SIZE};
+    const int dotRadius = CELL_SIZE / 8;
+    int dotX, dotY;
 	for (unsigned char a = 0; a < MAP_WIDTH; a++) {
 		for (unsigned char b = 0; b < MAP_HEIGHT; b++) {
-			cellShape.x = CELL_SIZE * a;
-			cellShape.y = CELL_SIZE * b;
+            wallShape.x = CELL_SIZE * a;
+            wallShape.y = CELL_SIZE * b;
+            dotX = (CELL_SIZE * a) + (CELL_SIZE / 2);
+            dotY = (CELL_SIZE * b) + (CELL_SIZE / 2);
 			switch (map[a][b]) {
 			    case Cell::Wall:
                     SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 200, 255);
-                    SDL_RenderFillRect(sdl_renderer, &cellShape);
+                    SDL_RenderFillRect(sdl_renderer, &wallShape);
+                    break;
+                case Cell::Dot:
+                    SDL_SetRenderDrawColor(sdl_renderer, 255, 255, 255, 255);
+                    for (int y = -dotRadius; y <= dotRadius; ++y)
+                        for (int x = -dotRadius; x <= dotRadius; ++x)
+                            if (x * x + y * y <= dotRadius * dotRadius)
+                                SDL_RenderDrawPoint(sdl_renderer, dotX + x, dotY + y);
                     break;
 			}
 		}
