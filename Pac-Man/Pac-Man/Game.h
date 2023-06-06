@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include "Renderer.h"
 #include "Pacman.h"
+#include "Ghost.h"
 
 class Game {
     public:
@@ -15,6 +16,7 @@ class Game {
     private:
         Pacman pacman_;
         int score = 0;
+        Ghost ghost_;
 };
 
 #endif

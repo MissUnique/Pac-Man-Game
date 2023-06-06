@@ -1,1 +1,12 @@
-﻿  Pac-Man.vcxproj -> C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\x64\Debug\Pac-Man.exe
+﻿  Game.cpp
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(42,61): warning C4267: 'argument': conversion from 'size_t' to 'Uint32', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(49,11): warning C4244: 'initializing': conversion from 'float' to 'short', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(50,11): warning C4244: 'initializing': conversion from 'float' to 'short', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(51,11): warning C4244: 'initializing': conversion from 'float' to 'short', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(52,11): warning C4244: 'initializing': conversion from 'float' to 'short', possible loss of data
+  Ghost.cpp
+  Pac-Man.cpp
+  Pacman.cpp
+  Renderer.cpp
+  Generating Code...
+  Pac-Man.vcxproj -> C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\x64\Debug\Pac-Man.exe

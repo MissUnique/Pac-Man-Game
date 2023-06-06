@@ -12,7 +12,7 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
     bool running = true;
 
     // Initialize the map
-    std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map = renderer.map_init(pacman_);
+    std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map = renderer.map_init(pacman_, ghost_);
 
     while (running) {
         // Game loop
@@ -28,7 +28,7 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
         // Move pacman
         pacman_.update(map);
         // Render map + pacman + score tag
-        renderer.render(pacman_, map, score);
+        renderer.render(pacman_, map, score, ghost_);
 
         frame_end = SDL_GetTicks();
 

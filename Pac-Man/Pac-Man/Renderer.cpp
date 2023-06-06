@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Pacman.h"
+#include "Ghost.h"
 #include <iostream>
 #include <string>
 
@@ -45,7 +46,7 @@ Renderer::~Renderer() {
     SDL_Quit();
 }
 
-std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& pacman) {
+std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& pacman, Ghost& ghost) {
     // Initialize the map
     std::array<std::string, MAP_HEIGHT> map_sketch = {
         " ################### ",
@@ -57,7 +58,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
         " ####.###.#.###.#### ",
         "    #.#       #.#    ",
         "#####.# ## ## #.#####",
-        "     .  #   #  .     ",
+        "     .  # G #  .     ",
         "#####.# ##### #.#####",
         "    #.#       #.#    ",
         " ####.# ##### #.#### ",
@@ -79,6 +80,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
             case '#': map[b][a] = Cell::Wall;                               break;
             case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
             case '.': map[b][a] = Cell::Dot;                                break;
+            case 'G': ghost.set_position(CELL_SIZE * b, CELL_SIZE * a);     break;
             default: map[b][a] = Cell::Empty;
             }
         }
@@ -87,7 +89,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
     return map;
 }
 
-void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score) {
+void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score, Ghost& ghost) {
     // Clear screen
     SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(sdl_renderer);
@@ -124,9 +126,12 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
     // Render the score
     render_score(score);
 
+    // Draw Ghost
+    ghost.draw(sdl_renderer);
+
     // Update Screen
     SDL_RenderPresent(sdl_renderer);
-    std::cout << "Great job Azza!" << '\n';
+    //std::cout << "Great job Azza!" << '\n';
 }
 
 void Renderer::render_score(int score) {

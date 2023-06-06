@@ -18,8 +18,8 @@ void Pacman::draw(SDL_Renderer* renderer) {
                 SDL_RenderDrawPoint(renderer, x0 + x, y0 + y);
 }
 
-void Pacman::set_position(short i_x, short i_y) {
-	position = {i_x, i_y};
+void Pacman::set_position(short x, short y) {
+	position = {x, y};
 }
 
 void Pacman::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_map) {
