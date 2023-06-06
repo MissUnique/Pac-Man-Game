@@ -1,4 +1,7 @@
 #include "Game.h"
+#include <iostream>
+
+Game::Game() : pacman_(*this) {}
 
 void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
     Uint32 title_timestamp = SDL_GetTicks();
@@ -24,8 +27,8 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
 
         // Move pacman
         pacman_.update(map);
-        // Render map + pacman
-        renderer.render(pacman_, map);
+        // Render map + pacman + score tag
+        renderer.render(pacman_, map, score);
 
         frame_end = SDL_GetTicks();
 
@@ -60,10 +63,18 @@ bool Game::collision(short x, short y, std::array<std::array<Cell, MAP_HEIGHT>, 
                 if (Cell::Wall == game_map[x][y])
                     return true;
             }
-            else { // Collide with a dot
-                game_map[x][y] = Cell::Empty;
+            else { 
+                if (game_map[x][y] == Cell::Dot) { // Collide with a dot
+                    game_map[x][y] = Cell::Empty;
+                    score += 100;
+                }
             }
         }
 	}
 	return false;
+}
+
+
+int Game::GetScore() const {
+    return score;
 }

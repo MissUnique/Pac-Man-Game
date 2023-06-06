@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <array>
+#include <SDL_ttf.h>
 class Pacman;
 
 const int MAP_HEIGHT = 21;
@@ -16,13 +17,15 @@ class Renderer {
         Renderer(const int screen_width, const int screen_height);
         ~Renderer();
         std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map_init(Pacman& pacman);
-        void render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map);
+        void render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score);
+        void render_score(int score);
 
     private:
         SDL_Window* window = NULL;
         SDL_Renderer* sdl_renderer = NULL;
         const int screen_width;
         const int screen_height;
+        TTF_Font* font = NULL;
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Pacman.h"
 #include <iostream>
+#include <string>
 
 Renderer::Renderer(const int screen_width, const int screen_height) : 
     screen_width(screen_width), screen_height(screen_height) {
@@ -9,6 +10,7 @@ Renderer::Renderer(const int screen_width, const int screen_height) :
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     }
     else {
+
         // Create window
         window = SDL_CreateWindow("Pac-Man Game --> Azza", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, 
             screen_height, SDL_WINDOW_SHOWN);
@@ -16,11 +18,23 @@ Renderer::Renderer(const int screen_width, const int screen_height) :
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         }
         else {
+
             // Create renderer
             sdl_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
             if (nullptr == sdl_renderer) {
                 std::cerr << "Renderer could not be created.\n";
                 std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
+            }
+
+            // Initialize the font
+            if (TTF_Init() == -1) {
+                printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+                throw std::runtime_error("Failed to initialize SDL_ttf");
+            }
+            font = TTF_OpenFont("ObelixProIt-cyr.ttf", 24);
+            if (font == NULL) {
+                printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+                throw std::runtime_error("Failed to load font");
             }
         }
     }
@@ -73,7 +87,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
     return map;
 }
 
-void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map) {
+void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score) {
     // Clear screen
     SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(sdl_renderer);
@@ -107,7 +121,49 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
     // Draw Pacman
     pacman.draw(sdl_renderer);
 
+    // Render the score
+    render_score(score);
+
     // Update Screen
     SDL_RenderPresent(sdl_renderer);
-    std::cout << "Good job Azza!" << '\n';
+    std::cout << "Great job Azza!" << '\n';
+}
+
+void Renderer::render_score(int score) {
+    // Convert the score to a string
+    std::string score_str = "Score: " + std::to_string(score);
+
+    // Create a surface containing the score text
+    SDL_Color color = { 255, 255, 255 }; // White
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, score_str.c_str(), color);
+    if (textSurface == NULL) {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+        return;
+    }
+
+    // Create a texture from the surface
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(sdl_renderer, textSurface);
+    if (texture == NULL) {
+        printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        SDL_FreeSurface(textSurface);
+        return;
+    }
+
+    // Get the width and height of the texture
+    int w, h;
+    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+
+    // Construct a rectangle to hold the texture
+    SDL_Rect rect;
+    rect.x = (screen_width - w) / 2;
+    rect.y = screen_height - h - 15;
+    rect.w = w;
+    rect.h = h;
+
+    // Render the texture to the screen
+    SDL_RenderCopy(sdl_renderer, texture, NULL, &rect);
+
+    // Clean up
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(textSurface);
 }

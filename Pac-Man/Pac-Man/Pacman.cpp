@@ -2,11 +2,15 @@
 #include "Game.h"
 #include <iostream>
 
+Pacman::Pacman(Game& g) : game_(g) {}
+
 void Pacman::draw(SDL_Renderer* renderer) {
+    // Circle (Pacman) dimentions
     const int radius = CELL_SIZE / 2;
     const int x0 = position.x + radius;
     const int y0 = position.y + radius;
 
+    // Draw yellow Pacman on screen
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
     for (int y = -radius; y <= radius; ++y)
         for (int x = -radius; x <= radius; ++x)
@@ -21,11 +25,10 @@ void Pacman::set_position(short i_x, short i_y) {
 void Pacman::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_map) {
     // Collision detection with walls
     bool walls[4];
-    Game g;
-    walls[0] = g.collision(PACMAN_SPEED + position.x, position.y, pacman_map, 0);
-    walls[1] = g.collision(position.x, position.y - PACMAN_SPEED, pacman_map, 0);
-    walls[2] = g.collision(position.x - PACMAN_SPEED, position.y, pacman_map, 0);
-    walls[3] = g.collision(position.x, PACMAN_SPEED + position.y, pacman_map, 0);
+    walls[0] = game_.collision(PACMAN_SPEED + position.x, position.y, pacman_map, 0);
+    walls[1] = game_.collision(position.x, position.y - PACMAN_SPEED, pacman_map, 0);
+    walls[2] = game_.collision(position.x - PACMAN_SPEED, position.y, pacman_map, 0);
+    walls[3] = game_.collision(position.x, PACMAN_SPEED + position.y, pacman_map, 0);
 
     // Control Pacman movement by keyboard
     const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
@@ -57,8 +60,8 @@ void Pacman::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_
     else if (CELL_SIZE * MAP_WIDTH <= position.x)
         position.x = PACMAN_SPEED - CELL_SIZE;
 
-    // Eat the dots
-    g.collision(position.x, position.y, pacman_map, 1);
+    // Eat the dots and get score points
+    game_.collision(position.x, position.y, pacman_map, 1);
 
     // Stop Pacman
     direction = -1;
