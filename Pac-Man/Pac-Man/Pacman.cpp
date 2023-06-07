@@ -56,7 +56,6 @@ void Pacman::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_
     // Check map edges and move to the opposite direction
     if (-CELL_SIZE >= position.x)
         position.x = CELL_SIZE * MAP_WIDTH - PACMAN_SPEED;
-    
     else if (CELL_SIZE * MAP_WIDTH <= position.x)
         position.x = PACMAN_SPEED - CELL_SIZE;
 

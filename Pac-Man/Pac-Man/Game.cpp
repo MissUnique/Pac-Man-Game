@@ -1,7 +1,7 @@
 #include "Game.h"
 #include <iostream>
 
-Game::Game() : pacman_(*this) {}
+Game::Game() : pacman_(*this), ghost_(*this) {}
 
 void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
     Uint32 title_timestamp = SDL_GetTicks();
@@ -25,8 +25,9 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
 
         frame_start = SDL_GetTicks();
 
-        // Move pacman
+        // Move pacman + ghost
         pacman_.update(map);
+        ghost_.update(map);
         // Render map + pacman + score tag
         renderer.render(pacman_, map, score, ghost_);
 
@@ -73,7 +74,6 @@ bool Game::collision(short x, short y, std::array<std::array<Cell, MAP_HEIGHT>, 
 	}
 	return false;
 }
-
 
 int Game::GetScore() const {
     return score;

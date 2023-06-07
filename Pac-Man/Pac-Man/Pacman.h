@@ -23,7 +23,7 @@ class Pacman {
 		void update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_map);
 
 	private:
-		Position position;
+		Position position = { 0, 0 };
 		int direction = -1;
 		Game& game_;
 };
