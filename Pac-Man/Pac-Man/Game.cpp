@@ -1,4 +1,5 @@
 #include "Game.h"
+
 #include <iostream>
 
 Game::Game() : pacman_(*this), ghost_(*this) {}
@@ -27,7 +28,7 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
 
         // Move pacman + ghost
         pacman_.update(map);
-        ghost_.update(map);
+        ghost_.update(map, pacman_.GetPosition());
         // Render map + pacman + score tag
         renderer.render(pacman_, map, score, ghost_);
 
@@ -45,12 +46,12 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
     }
 }
 
-bool Game::collision(short x, short y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& game_map, bool eat_dots) {
+bool Game::collision(int x, int y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& game_map, bool eat_dots) {
     // Detect the collision with a wall
-	short xf = floor(x / static_cast<float>(CELL_SIZE));
-	short xc = ceil(x / static_cast<float>(CELL_SIZE));
-	short yf = floor(y / static_cast<float>(CELL_SIZE));
-	short yc = ceil(y / static_cast<float>(CELL_SIZE));
+	int xf = floor(x / static_cast<float>(CELL_SIZE));
+	int xc = ceil(x / static_cast<float>(CELL_SIZE));
+	int yf = floor(y / static_cast<float>(CELL_SIZE));
+	int yc = ceil(y / static_cast<float>(CELL_SIZE));
 	for (int i = 0; i < 4; ++i) {
 		switch (i) {
 			case 0:     x = xf;		y = yf;		break;
@@ -60,12 +61,14 @@ bool Game::collision(short x, short y, std::array<std::array<Cell, MAP_HEIGHT>, 
 		}
 
         if (x >= 0 && y >= 0 && x < MAP_WIDTH && y < MAP_HEIGHT) {
-            if (eat_dots == 0) { // Collide with a wall
+            // Collide with a wall
+            if (eat_dots == 0) { 
                 if (Cell::Wall == game_map[x][y])
                     return true;
             }
+            // Collide with a dot
             else { 
-                if (game_map[x][y] == Cell::Dot) { // Collide with a dot
+                if (game_map[x][y] == Cell::Dot) { 
                     game_map[x][y] = Cell::Empty;
                     score += 100;
                 }

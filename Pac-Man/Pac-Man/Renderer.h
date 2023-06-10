@@ -11,7 +11,7 @@ const int MAP_HEIGHT = 21;
 const int MAP_WIDTH = 21;
 const int CELL_SIZE = 26;
 
-enum class Cell { Door, Empty, Energizer, Dot, Wall };
+enum class Cell { Empty, Dot, Wall };
 
 class Renderer {
     public:

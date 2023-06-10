@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Pacman.h"
 #include "Ghost.h"
+
 #include <iostream>
 #include <string>
 
@@ -131,7 +132,7 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
 
     // Update Screen
     SDL_RenderPresent(sdl_renderer);
-    //std::cout << "Great job Azza!" << '\n';
+    std::cout << "Wonderful job Azza!" << '\n';
 }
 
 void Renderer::render_score(int score) {

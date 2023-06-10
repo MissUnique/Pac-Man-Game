@@ -1,1 +1,3 @@
-﻿  Pac-Man.vcxproj -> C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\x64\Debug\Pac-Man.exe
+﻿  Ghost.cpp
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Ghost.h(10,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Pac-Man.vcxproj -> C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\x64\Debug\Pac-Man.exe

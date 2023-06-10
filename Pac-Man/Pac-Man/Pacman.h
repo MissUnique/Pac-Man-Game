@@ -2,14 +2,16 @@
 #define PACMAN_H
 
 #include <SDL.h>
+
 #include "Renderer.h"
+
 class Game;
 
 const int PACMAN_SPEED = 2;
 
 struct Position {
-	short x;
-	short y;
+	int x;
+	int y;
 	bool operator==(const Position& i_position) {
 		return this->x == i_position.x && this->y == i_position.y;
 	}
@@ -19,8 +21,9 @@ class Pacman {
 	public:
 		Pacman(Game& g);
 		void draw(SDL_Renderer* renderer);
-		void set_position(short x, short y);
+		void set_position(int x, int y);
 		void update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_map);
+		Position GetPosition();
 
 	private:
 		Position position = { 0, 0 };

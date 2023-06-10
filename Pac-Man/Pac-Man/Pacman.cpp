@@ -1,5 +1,6 @@
 #include "Pacman.h"
 #include "Game.h"
+
 #include <iostream>
 
 Pacman::Pacman(Game& g) : game_(g) {}
@@ -18,7 +19,7 @@ void Pacman::draw(SDL_Renderer* renderer) {
                 SDL_RenderDrawPoint(renderer, x0 + x, y0 + y);
 }
 
-void Pacman::set_position(short x, short y) {
+void Pacman::set_position(int x, int y) {
 	position = {x, y};
 }
 
@@ -64,4 +65,8 @@ void Pacman::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_
 
     // Stop Pacman
     direction = -1;
+}
+
+Position Pacman::GetPosition() {
+    return position;
 }
