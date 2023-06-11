@@ -2,6 +2,8 @@
 #define GHOST_H
 
 #include <SDL.h>
+#include <chrono>
+#include <time.h>
 
 #include "Pacman.h"
 
@@ -25,6 +27,12 @@ class Ghost {
         int prev_direction = -1;
         Game& game_;
         const int delta[4][2]{ {-1, 0}, {0, -1}, {1, 0}, {0, 1} };
+        bool canBeEaten = false;
+        unsigned seed = static_cast<unsigned>(time(NULL)); // using the system clock
+        int random_direction = rand() % 4;
+        bool canMove = true;
+        Position init_pos = { 0, 0 };
+        bool isEaten = false;
 };
 
 #endif

@@ -27,7 +27,7 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
         frame_start = SDL_GetTicks();
 
         // Check if ghost killed Pacman
-        if (ghost_.collide_with_pacman(pacman_.GetPosition()))
+        if (ghost_.collide_with_pacman(pacman_.GetPosition()) && !isEnergized)
             renderer.render_gameover(pacman_, score);
 
         // else check if Pacman won
@@ -40,7 +40,7 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
             pacman_.update(map);
             ghost_.update(map, pacman_.GetPosition());
 
-            // Render map + Pacman + score tag
+            // Render map + Pacman + score tag + ghost
             renderer.render(pacman_, map, score, ghost_);
         }
         frame_end = SDL_GetTicks();
@@ -77,15 +77,25 @@ bool Game::collision(int x, int y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_
                 if (Cell::Wall == game_map[x][y])
                     return true;
             }
-            // Collide with a dot
-            else { 
+            else {
+                // Collide with a dot
                 if (game_map[x][y] == Cell::Dot) { 
                     game_map[x][y] = Cell::Empty;
                     score += 100;
                     dots--;
                 }
+                // Collide with an energizer
+                else if (game_map[x][y] == Cell::Energizer) {
+                    game_map[x][y] = Cell::Empty;
+                    isEnergized = true;
+                    t1 = std::chrono::high_resolution_clock::now();
+                }
             }
         }
 	}
 	return false;
+}
+
+void Game::add_score(int s) {
+    score += s;
 }

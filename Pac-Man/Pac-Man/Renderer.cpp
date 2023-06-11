@@ -52,7 +52,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
     std::array<std::string, MAP_HEIGHT> map_sketch = {
         " ################### ",
         " #........#........# ",
-        " #.##.###.#.###.##.# ",
+        " #e##.###.#.###.##e# ",
         " #.................# ",
         " #.##.#.#####.#.##.# ",
         " #....#...#...#....# ",
@@ -67,7 +67,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
         " #..#..###.###..#..# ",
         " #.# #...#...#.# #.# ",
         " #.###..#...#..###.# ",
-        " #.#.#.#...#...#.#.# ",
+        " #.#e#.#...#...#e#.# ",
         " #.#.#.###.###.#.#.# ",
         " #.................# ",
         " ################### "
@@ -82,7 +82,8 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
             case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
             case '.': map[b][a] = Cell::Dot;                                break;
             case 'G': ghost.set_position(CELL_SIZE * b, CELL_SIZE * a);     break;
-            case '-': map[b][a] = Cell::Door;                                break;
+            case '-': map[b][a] = Cell::Door;                               break;
+            case 'e': map[b][a] = Cell::Energizer;                          break;
             default: map[b][a] = Cell::Empty;
             }
         }
@@ -100,18 +101,21 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
     SDL_Rect wallShape = {0, 0, CELL_SIZE, CELL_SIZE };
     SDL_Rect doorShape = { 0, 0, CELL_SIZE, CELL_SIZE / 3 };
     const int dotRadius = CELL_SIZE / 8;
-    int dotX, dotY;
+    const int energizerRadius = CELL_SIZE / 3;
+    int dotX, dotY, energizerX, energizerY;
 	for (unsigned char a = 0; a < MAP_WIDTH; a++) {
 		for (unsigned char b = 0; b < MAP_HEIGHT; b++) {
             wallShape.x = CELL_SIZE * a;
             wallShape.y = CELL_SIZE * b;
             dotX = (CELL_SIZE * a) + (CELL_SIZE / 2);
             dotY = (CELL_SIZE * b) + (CELL_SIZE / 2);
+            energizerX = (CELL_SIZE * a) + (CELL_SIZE / 2);
+            energizerY = (CELL_SIZE * b) + (CELL_SIZE / 2);
             doorShape.x = CELL_SIZE * a;
             doorShape.y = (CELL_SIZE * b) + (CELL_SIZE / 4);
 			switch (map[a][b]) {
 			    case Cell::Wall:
-                    SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 200, 255);
+                    SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 255, 255);
                     SDL_RenderFillRect(sdl_renderer, &wallShape);
                     break;
                 case Cell::Dot:
@@ -122,8 +126,15 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
                                 SDL_RenderDrawPoint(sdl_renderer, dotX + x, dotY + y);
                     break;
                 case Cell::Door:
-                    SDL_SetRenderDrawColor(sdl_renderer, 30, 240, 240, 255);
+                    SDL_SetRenderDrawColor(sdl_renderer, 0, 255, 255, 255);
                     SDL_RenderFillRect(sdl_renderer, &doorShape);
+                    break;
+                case Cell::Energizer:
+                    SDL_SetRenderDrawColor(sdl_renderer, 0, 255, 255, 255);
+                    for (int y = -energizerRadius; y <= energizerRadius; ++y)
+                        for (int x = -energizerRadius; x <= energizerRadius; ++x)
+                            if (x * x + y * y <= energizerRadius * energizerRadius)
+                                SDL_RenderDrawPoint(sdl_renderer, energizerX + x, energizerY + y);
                     break;
 			}
 		}
