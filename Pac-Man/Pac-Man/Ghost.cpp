@@ -184,3 +184,10 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
     else if (CELL_SIZE * MAP_WIDTH <= position.x)
         position.x = GHOST_SPEED - CELL_SIZE;
 }
+
+bool Ghost::collide_with_pacman(Position pacman_pos) {
+    if (position.x > pacman_pos.x - CELL_SIZE && position.x < CELL_SIZE + pacman_pos.x)
+        if (position.y > pacman_pos.y - CELL_SIZE && position.y < CELL_SIZE + pacman_pos.y)
+            return 1;
+    return 0;
+}

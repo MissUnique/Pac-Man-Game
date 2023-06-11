@@ -12,7 +12,6 @@ class Game {
         Game();
         void Run(Renderer& renderer, std::size_t target_frame_duration);
         bool collision(int x, int y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& game_map, bool eat_dots);
-        int GetScore() const;
 
     private:
         Pacman pacman_;

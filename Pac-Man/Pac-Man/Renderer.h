@@ -19,7 +19,8 @@ class Renderer {
         ~Renderer();
         std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map_init(Pacman& pacman, Ghost& ghost);
         void render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score, Ghost& ghost);
-        void render_score(int score);
+        void render_score(int score, bool gameover);
+        void render_gameover(Pacman& pacman, int score);
 
     private:
         SDL_Window* window = NULL;

@@ -26,12 +26,18 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
 
         frame_start = SDL_GetTicks();
 
-        // Move pacman + ghost
-        pacman_.update(map);
-        ghost_.update(map, pacman_.GetPosition());
-        // Render map + pacman + score tag
-        renderer.render(pacman_, map, score, ghost_);
-
+        // Check if ghost killed pacman
+        if (ghost_.collide_with_pacman(pacman_.GetPosition())) {
+            std::cout << "Gotcha pacman :)\n";
+            renderer.render_gameover(pacman_, score);
+        }
+        else {
+            // Move pacman + ghost
+            pacman_.update(map);
+            ghost_.update(map, pacman_.GetPosition());
+            // Render map + pacman + score tag
+            renderer.render(pacman_, map, score, ghost_);
+        }
         frame_end = SDL_GetTicks();
 
         // Keep track of how long each loop through the input/update/render cycle takes.
@@ -76,8 +82,4 @@ bool Game::collision(int x, int y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_
         }
 	}
 	return false;
-}
-
-int Game::GetScore() const {
-    return score;
 }

@@ -1,3 +1,17 @@
-﻿  Ghost.cpp
+﻿  Game.cpp
 C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Ghost.h(10,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(50,61): warning C4267: 'argument': conversion from 'size_t' to 'Uint32', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(57,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(58,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(59,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(60,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Ghost.cpp
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Ghost.h(10,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Pac-Man.cpp
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Ghost.h(10,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Pacman.cpp
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Ghost.h(10,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Renderer.cpp
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Ghost.h(10,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
   Pac-Man.vcxproj -> C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\x64\Debug\Pac-Man.exe

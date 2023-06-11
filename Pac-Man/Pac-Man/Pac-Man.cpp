@@ -15,6 +15,5 @@ int main(int argc, char* args[]) {
 	Game game;
 	game.Run(renderer, kMsPerFrame);
 	std::cout << "Game has terminated successfully!" << '\n';
-	std::cout << "Score: " << game.GetScore() << "\n";
 	return 0;
 }

@@ -125,17 +125,17 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
     pacman.draw(sdl_renderer);
 
     // Render the score
-    render_score(score);
+    render_score(score, 0);
 
     // Draw Ghost
     ghost.draw(sdl_renderer);
 
     // Update Screen
     SDL_RenderPresent(sdl_renderer);
-    std::cout << "Wonderful job Azza!" << '\n';
+    //std::cout << "Wonderful job Azza!" << '\n';
 }
 
-void Renderer::render_score(int score) {
+void Renderer::render_score(int score, bool gameover) {
     // Convert the score to a string
     std::string score_str = "Score: " + std::to_string(score);
 
@@ -159,10 +159,16 @@ void Renderer::render_score(int score) {
     int w, h;
     SDL_QueryTexture(texture, NULL, NULL, &w, &h);
 
-    // Construct a rectangle to hold the texture
+    // Construct a rectangle to hold the texture with location depending on game state
     SDL_Rect rect;
-    rect.x = (screen_width - w) / 2;
-    rect.y = screen_height - h - 15;
+    if (!gameover) {
+        rect.x = (screen_width - w) / 2;
+        rect.y = screen_height - h - 15;
+    }
+    else {
+        rect.x = (screen_width - w) / 2;
+        rect.y = (screen_height - h) / 2;
+    }
     rect.w = w;
     rect.h = h;
 
@@ -172,4 +178,45 @@ void Renderer::render_score(int score) {
     // Clean up
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(textSurface);
+}
+
+void Renderer::render_gameover(Pacman& pacman, int score) {
+    // Clear screen
+    SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xFF);
+    SDL_RenderClear(sdl_renderer);
+
+    // Draw Pacman
+    pacman.draw(sdl_renderer);
+
+    // Render the score
+    render_score(score, 1);
+
+    // Render game over
+    std::string gameover_str = "GAME   OVER";
+    SDL_Color color = { 200, 0, 0 };
+    TTF_Font* endfont = TTF_OpenFont("ObelixProIt-cyr.ttf", 50);
+    SDL_Surface* textSurface = TTF_RenderText_Solid(endfont, gameover_str.c_str(), color);
+    if (textSurface == NULL) {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+        return;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(sdl_renderer, textSurface);
+    if (texture == NULL) {
+        printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        SDL_FreeSurface(textSurface);
+        return;
+    }
+    int w, h;
+    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_Rect rect;
+    rect.x = (screen_width - w) / 2;
+    rect.y = (screen_height - h) / 4;
+    rect.w = w;
+    rect.h = h;
+    SDL_RenderCopy(sdl_renderer, texture, NULL, &rect);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(textSurface);
+
+    // Update Screen
+    SDL_RenderPresent(sdl_renderer);
 }
