@@ -210,7 +210,45 @@ void Renderer::render_gameover(Pacman& pacman, int score) {
     SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     SDL_Rect rect;
     rect.x = (screen_width - w) / 2;
-    rect.y = (screen_height - h) / 4;
+    rect.y = (screen_height - h) / 3;
+    rect.w = w;
+    rect.h = h;
+    SDL_RenderCopy(sdl_renderer, texture, NULL, &rect);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(textSurface);
+
+    // Update Screen
+    SDL_RenderPresent(sdl_renderer);
+}
+
+void Renderer::render_win(Pacman& pacman) {
+    // Clear screen
+    SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xFF);
+    SDL_RenderClear(sdl_renderer);
+
+    // Draw Pacman
+    pacman.draw(sdl_renderer);
+
+    // Render YOU WIN!
+    std::string gameover_str = "YOU   WIN!";
+    SDL_Color color = { 0, 255, 0 };
+    TTF_Font* endfont = TTF_OpenFont("ObelixProIt-cyr.ttf", 50);
+    SDL_Surface* textSurface = TTF_RenderText_Solid(endfont, gameover_str.c_str(), color);
+    if (textSurface == NULL) {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+        return;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(sdl_renderer, textSurface);
+    if (texture == NULL) {
+        printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        SDL_FreeSurface(textSurface);
+        return;
+    }
+    int w, h;
+    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_Rect rect;
+    rect.x = (screen_width - w) / 2;
+    rect.y = (screen_height - h) / 3;
     rect.w = w;
     rect.h = h;
     SDL_RenderCopy(sdl_renderer, texture, NULL, &rect);

@@ -17,6 +17,7 @@ class Game {
         Pacman pacman_;
         int score = 0;
         Ghost ghost_;
+        int dots = 153;
 };
 
 #endif

@@ -21,6 +21,7 @@ class Renderer {
         void render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score, Ghost& ghost);
         void render_score(int score, bool gameover);
         void render_gameover(Pacman& pacman, int score);
+        void render_win(Pacman& pacman);
 
     private:
         SDL_Window* window = NULL;
