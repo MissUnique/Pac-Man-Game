@@ -58,7 +58,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
         " #....#...#...#....# ",
         " ####.###.#.###.#### ",
         "    #.#       #.#    ",
-        "#####.# ## ## #.#####",
+        "#####.# ##-## #.#####",
         "     .  # G #  .     ",
         "#####.# ##### #.#####",
         "    #.#       #.#    ",
@@ -82,6 +82,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
             case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
             case '.': map[b][a] = Cell::Dot;                                break;
             case 'G': ghost.set_position(CELL_SIZE * b, CELL_SIZE * a);     break;
+            case '-': map[b][a] = Cell::Door;                                break;
             default: map[b][a] = Cell::Empty;
             }
         }
@@ -96,7 +97,8 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
     SDL_RenderClear(sdl_renderer);
 
     // Draw the map
-    SDL_Rect wallShape = {0, 0, CELL_SIZE, CELL_SIZE};
+    SDL_Rect wallShape = {0, 0, CELL_SIZE, CELL_SIZE };
+    SDL_Rect doorShape = { 0, 0, CELL_SIZE, CELL_SIZE / 3 };
     const int dotRadius = CELL_SIZE / 8;
     int dotX, dotY;
 	for (unsigned char a = 0; a < MAP_WIDTH; a++) {
@@ -105,6 +107,8 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
             wallShape.y = CELL_SIZE * b;
             dotX = (CELL_SIZE * a) + (CELL_SIZE / 2);
             dotY = (CELL_SIZE * b) + (CELL_SIZE / 2);
+            doorShape.x = CELL_SIZE * a;
+            doorShape.y = (CELL_SIZE * b) + (CELL_SIZE / 4);
 			switch (map[a][b]) {
 			    case Cell::Wall:
                     SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 200, 255);
@@ -116,6 +120,10 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
                         for (int x = -dotRadius; x <= dotRadius; ++x)
                             if (x * x + y * y <= dotRadius * dotRadius)
                                 SDL_RenderDrawPoint(sdl_renderer, dotX + x, dotY + y);
+                    break;
+                case Cell::Door:
+                    SDL_SetRenderDrawColor(sdl_renderer, 30, 240, 240, 255);
+                    SDL_RenderFillRect(sdl_renderer, &doorShape);
                     break;
 			}
 		}
