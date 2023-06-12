@@ -75,14 +75,14 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
     for (unsigned char a = 0; a < MAP_HEIGHT; a++) {
         for (unsigned char b = 0; b < MAP_WIDTH; b++) {
             switch (map_sketch[a][b]) {
-            case '#': map[b][a] = Cell::Wall;                               break;
-            case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
-            case '.': map[b][a] = Cell::Dot;                                break;
-            case 'B': Blinky.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
-            case '-': map[b][a] = Cell::Door;                               break;
-            case 'e': map[b][a] = Cell::Energizer;                          break;
-            case 'C': Clyde.set_position(CELL_SIZE * b, CELL_SIZE * a);     break;
-            default: map[b][a] = Cell::Empty;
+                case '#': map[b][a] = Cell::Wall;                               break;
+                case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
+                case '.': map[b][a] = Cell::Dot;                                break;
+                case 'B': Blinky.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
+                case '-': map[b][a] = Cell::Door;                               break;
+                case 'e': map[b][a] = Cell::Energizer;                          break;
+                case 'C': Clyde.set_position(CELL_SIZE * b, CELL_SIZE * a);     break;
+                default: map[b][a] = Cell::Empty;
             }
         }
     }
