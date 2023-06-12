@@ -4,6 +4,9 @@
 #include <SDL.h>
 #include <array>
 #include <SDL_ttf.h>
+#include <iostream>
+#include <string>
+
 class Pacman;
 class Ghost;
 
@@ -24,11 +27,11 @@ class Renderer {
         void render_win(Pacman& pacman);
 
     private:
-        SDL_Window* window = NULL;
-        SDL_Renderer* sdl_renderer = NULL;
+        SDL_Window* window;
+        SDL_Renderer* sdl_renderer;
         const int screen_width;
         const int screen_height;
-        TTF_Font* font = NULL;
+        TTF_Font* font;
 };
 
 #endif

@@ -1,8 +1,7 @@
 #include "Game.h"
 
-#include <iostream>
-
-Game::Game() : pacman_(*this), ghost_(*this) {}
+Game::Game() : pacman_(*this), ghost_(*this), score(0), dots(0), 
+    isEnergized(false), t1(std::chrono::high_resolution_clock::now()) {}
 
 void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
     Uint32 title_timestamp = SDL_GetTicks();
@@ -25,6 +24,12 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
         }
 
         frame_start = SDL_GetTicks();
+
+        dots = 0;
+        for (int i = 0; i < MAP_WIDTH; ++i)
+            for (int j = 0; j < MAP_HEIGHT; j++)
+                if (map[i][j] == Cell::Dot)
+                    dots++;
 
         // Check if ghost killed Pacman
         if (ghost_.collide_with_pacman(pacman_.GetPosition()) && !isEnergized)
@@ -82,7 +87,6 @@ bool Game::collision(int x, int y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_
                 if (game_map[x][y] == Cell::Dot) { 
                     game_map[x][y] = Cell::Empty;
                     score += 100;
-                    dots--;
                 }
                 // Collide with an energizer
                 else if (game_map[x][y] == Cell::Energizer) {

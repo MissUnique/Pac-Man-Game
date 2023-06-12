@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <chrono>
+#include <iostream>
 
 #include "Renderer.h"
 #include "Pacman.h"
@@ -13,15 +14,16 @@ class Game {
         Game();
         void Run(Renderer& renderer, std::size_t target_frame_duration);
         bool collision(int x, int y, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& game_map, bool eat_dots);
-        bool isEnergized = false;
-        std::chrono::high_resolution_clock::time_point t1;
         void add_score(int s);
+
+        bool isEnergized;
+        std::chrono::high_resolution_clock::time_point t1;
 
     private:
         Pacman pacman_;
-        int score = 0;
+        int score;
         Ghost ghost_;
-        int dots = 153;
+        int dots;
 };
 
 #endif

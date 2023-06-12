@@ -2,6 +2,7 @@
 #define PACMAN_H
 
 #include <SDL.h>
+#include <iostream>
 
 #include "Renderer.h"
 
@@ -26,8 +27,8 @@ class Pacman {
 		Position GetPosition();
 
 	private:
-		Position position = { 0, 0 };
-		int direction = -1;
+		Position position;
+		int direction;
 		Game& game_;
 };
 

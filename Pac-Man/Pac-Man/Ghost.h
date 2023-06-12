@@ -4,6 +4,10 @@
 #include <SDL.h>
 #include <chrono>
 #include <time.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
 
 #include "Pacman.h"
 
@@ -22,17 +26,17 @@ class Ghost {
         bool collide_with_pacman(Position pacman_pos);
 
     private:
-        Position position = { 0, 0 };
-        int direction = -1;
-        int prev_direction = -1;
+        Position position;
+        int direction;
+        int prev_direction;
         Game& game_;
         const int delta[4][2]{ {-1, 0}, {0, -1}, {1, 0}, {0, 1} };
-        bool canBeEaten = false;
+        bool canBeEaten;
         unsigned seed = static_cast<unsigned>(time(NULL)); // using the system clock
         int random_direction = rand() % 4;
-        bool canMove = true;
-        Position init_pos = { 0, 0 };
-        bool isEaten = false;
+        bool canMove;
+        Position init_pos;
+        bool isEaten;
 };
 
 #endif

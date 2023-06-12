@@ -1,12 +1,8 @@
 #include "Ghost.h"
 #include "Game.h"
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-
-Ghost::Ghost(Game& g) : game_(g) { srand(seed); }
+Ghost::Ghost(Game& g) : game_(g), position({ 0, 0 }), direction(-1), prev_direction(-1),
+    canBeEaten(false), canMove(true), init_pos({ 0, 0 }), isEaten(false) { srand(seed); }
 
 void Ghost::draw(SDL_Renderer* renderer) {
     if (!canBeEaten)
@@ -14,7 +10,7 @@ void Ghost::draw(SDL_Renderer* renderer) {
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     else
         // Set color to blue
-        SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 128, 255);
     
     // Draw lower part of the ghost
     SDL_Rect lower_Shape = { position.x + 1, position.y + (CELL_SIZE / 2), CELL_SIZE - 1, CELL_SIZE / 2 };
@@ -186,20 +182,20 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
         // [Directions: (0 = right) (1 = up) (2 = Left) (3 = down)]
         if (!walls[direction]) {
             switch (direction) {
-            case 0: position.x += GHOST_SPEED;     break;
-            case 1: position.y -= GHOST_SPEED;     break;
-            case 2: position.x -= GHOST_SPEED;     break;
-            case 3: position.y += GHOST_SPEED;     break;
+                case 0: position.x += GHOST_SPEED;     break;
+                case 1: position.y -= GHOST_SPEED;     break;
+                case 2: position.x -= GHOST_SPEED;     break;
+                case 3: position.y += GHOST_SPEED;     break;
             }
             prev_direction = direction;
         }
         // If ghost hits a wall, move in last saved direction
         else {
             switch (prev_direction) {
-            case 0: position.x += GHOST_SPEED;     break;
-            case 1: position.y -= GHOST_SPEED;     break;
-            case 2: position.x -= GHOST_SPEED;     break;
-            case 3: position.y += GHOST_SPEED;     break;
+                case 0: position.x += GHOST_SPEED;     break;
+                case 1: position.y -= GHOST_SPEED;     break;
+                case 2: position.x -= GHOST_SPEED;     break;
+                case 3: position.y += GHOST_SPEED;     break;
             }
         }
 

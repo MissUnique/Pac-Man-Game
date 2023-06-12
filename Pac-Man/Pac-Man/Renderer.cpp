@@ -2,11 +2,8 @@
 #include "Pacman.h"
 #include "Ghost.h"
 
-#include <iostream>
-#include <string>
-
-Renderer::Renderer(const int screen_width, const int screen_height) : 
-    screen_width(screen_width), screen_height(screen_height) {
+Renderer::Renderer(const int screen_width, const int screen_height) : screen_width(screen_width), 
+    screen_height(screen_height), window(NULL), sdl_renderer(NULL), font(NULL) {
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());

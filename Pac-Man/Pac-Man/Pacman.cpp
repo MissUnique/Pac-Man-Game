@@ -1,9 +1,7 @@
 #include "Pacman.h"
 #include "Game.h"
 
-#include <iostream>
-
-Pacman::Pacman(Game& g) : game_(g) {}
+Pacman::Pacman(Game& g) : game_(g), position({ 0, 0 }), direction(-1) {}
 
 void Pacman::draw(SDL_Renderer* renderer) {
     // Circle (Pacman) dimentions
@@ -33,17 +31,13 @@ void Pacman::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& pacman_
 
     // Control Pacman movement by keyboard
     const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
-    if (keyboardState[SDL_SCANCODE_RIGHT])
-        if (walls[0] == 0)
+    if (keyboardState[SDL_SCANCODE_RIGHT] && walls[0] == 0)
             direction = 0;
-    if (keyboardState[SDL_SCANCODE_UP])
-        if (walls[1] == 0)
+    if (keyboardState[SDL_SCANCODE_UP] && walls[1] == 0)
             direction = 1;
-    if (keyboardState[SDL_SCANCODE_LEFT])
-        if (walls[2] == 0)
+    if (keyboardState[SDL_SCANCODE_LEFT] && walls[2] == 0)
             direction = 2;
-    if (keyboardState[SDL_SCANCODE_DOWN])
-        if (walls[3] == 0)
+    if (keyboardState[SDL_SCANCODE_DOWN] && walls[3] == 0)
             direction = 3;
 
     // Move Pacman
