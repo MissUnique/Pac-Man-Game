@@ -49,6 +49,12 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
 
             // Render map + Pacman + score tag + ghost
             renderer.render(pacman_, map, score, Blinky_, Clyde_);
+
+            // Return ghosts to normal state if game is not energized
+            if (!isEnergized) {
+                Blinky_.set_canBeEaten(false);
+                Clyde_.set_canBeEaten(false);
+            }
         }
         frame_end = SDL_GetTicks();
 

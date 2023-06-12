@@ -24,6 +24,7 @@ class Ghost {
         void set_position(int x, int y);
         void update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_map, Position pacman_pos, int id);
         bool collide_with_pacman(Position pacman_pos);
+        void set_canBeEaten(bool can);
 
     private:
         Position position;

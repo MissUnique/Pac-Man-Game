@@ -1,1 +1,11 @@
-﻿  Pac-Man.vcxproj -> C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\x64\Debug\Pac-Man.exe
+﻿  Game.cpp
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Ghost.h(16,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(67,61): warning C4267: 'argument': conversion from 'size_t' to 'Uint32', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(74,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(75,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(76,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Game.cpp(77,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Renderer.cpp
+C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\Pac-Man\Ghost.h(16,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  Pac-Man.vcxproj -> C:\Users\Miss\Documents\2023\Courses\Udacity Scholarship\Project 5\Codes\Project\Pac-Man-Game\Pac-Man\x64\Debug\Pac-Man.exe

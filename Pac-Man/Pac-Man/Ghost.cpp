@@ -43,7 +43,7 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
     else {
         std::chrono::high_resolution_clock::time_point t2_Clyde = std::chrono::high_resolution_clock::now();
         auto duration_Clyde = std::chrono::duration_cast<std::chrono::milliseconds>(t2_Clyde - t1_Clyde).count();
-        if (duration_Clyde > 3000) {
+        if (duration_Clyde > 5000) {
             if (status)
                 status = false;
             else
@@ -52,6 +52,8 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
         }
         if (status)
             target = pacman_pos;
+        else
+            target = { 26, 26 };
     }
     if (canMove) {
         // Collision detection with walls
@@ -261,7 +263,6 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
         }
         else {
             game_.isEnergized = false;
-            canBeEaten = false;
         }
     }
 }
@@ -271,4 +272,8 @@ bool Ghost::collide_with_pacman(Position pacman_pos) {
         if (position.y > pacman_pos.y - CELL_SIZE && position.y < CELL_SIZE + pacman_pos.y)
             return 1;
     return 0;
+}
+
+void Ghost::set_canBeEaten(bool can) {
+    canBeEaten = can;
 }
