@@ -22,7 +22,7 @@ class Game {
     private:
         Pacman pacman_;
         int score;
-        Ghost ghost_;
+        Ghost Blinky_, Clyde_;
         int dots;
 };
 

@@ -20,8 +20,8 @@ class Renderer {
     public:
         Renderer(const int screen_width, const int screen_height);
         ~Renderer();
-        std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map_init(Pacman& pacman, Ghost& ghost);
-        void render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score, Ghost& ghost);
+        std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map_init(Pacman& pacman, Ghost& Blinky, Ghost& Clyde);
+        void render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score, Ghost& Blinky, Ghost& Clyde);
         void render_score(int score, bool gameover);
         void render_gameover(Pacman& pacman, int score);
         void render_win(Pacman& pacman);

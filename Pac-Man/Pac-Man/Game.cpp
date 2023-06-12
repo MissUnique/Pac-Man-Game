@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game() : pacman_(*this), ghost_(*this), score(0), dots(0), 
+Game::Game() : pacman_(*this), Blinky_(*this), Clyde_(*this), score(0), dots(0),
     isEnergized(false), t1(std::chrono::high_resolution_clock::now()) {}
 
 void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
@@ -12,7 +12,7 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
     bool running = true;
 
     // Initialize the map
-    std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map = renderer.map_init(pacman_, ghost_);
+    std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map = renderer.map_init(pacman_, Blinky_, Clyde_);
 
     while (running) {
         // Game loop
@@ -32,7 +32,8 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
                     dots++;
 
         // Check if ghost killed Pacman
-        if (ghost_.collide_with_pacman(pacman_.GetPosition()) && !isEnergized)
+        if ((Blinky_.collide_with_pacman(pacman_.GetPosition()) && !isEnergized)
+            || (Clyde_.collide_with_pacman(pacman_.GetPosition()) && !isEnergized))
             renderer.render_gameover(pacman_, score);
 
         // else check if Pacman won
@@ -43,10 +44,11 @@ void Game::Run(Renderer& renderer, std::size_t target_frame_duration) {
         else {
             // Move pacman + ghost
             pacman_.update(map);
-            ghost_.update(map, pacman_.GetPosition());
+            Blinky_.update(map, pacman_.GetPosition(), 1);
+            Clyde_.update(map, pacman_.GetPosition(), 2);
 
             // Render map + Pacman + score tag + ghost
-            renderer.render(pacman_, map, score, ghost_);
+            renderer.render(pacman_, map, score, Blinky_, Clyde_);
         }
         frame_end = SDL_GetTicks();
 

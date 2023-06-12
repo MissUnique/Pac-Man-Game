@@ -20,9 +20,9 @@ enum class State { kClosed, kEmpty, kPath, kWall };
 class Ghost {
     public:
         Ghost(Game& g);
-        void draw(SDL_Renderer* renderer);
+        void draw(SDL_Renderer* renderer, int id);
         void set_position(int x, int y);
-        void update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_map, Position pacman_pos);
+        void update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_map, Position pacman_pos, int id);
         bool collide_with_pacman(Position pacman_pos);
 
     private:
@@ -37,6 +37,9 @@ class Ghost {
         bool canMove;
         Position init_pos;
         bool isEaten;
+        Position target;
+        std::chrono::high_resolution_clock::time_point t1_Clyde;
+        bool status;
 };
 
 #endif

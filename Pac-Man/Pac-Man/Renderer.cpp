@@ -44,7 +44,7 @@ Renderer::~Renderer() {
     SDL_Quit();
 }
 
-std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& pacman, Ghost& ghost) {
+std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& pacman, Ghost& Blinky, Ghost& Clyde) {
     // Initialize the map
     std::array<std::string, MAP_HEIGHT> map_sketch = {
         " ################### ",
@@ -56,7 +56,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
         " ####.###.#.###.#### ",
         "    #.#       #.#    ",
         "#####.# ##-## #.#####",
-        "     .  # G #  .     ",
+        "     .  #CB #  .     ",
         "#####.# ##### #.#####",
         "    #.#       #.#    ",
         " ####.# ##### #.#### ",
@@ -78,9 +78,10 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
             case '#': map[b][a] = Cell::Wall;                               break;
             case 'P': pacman.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
             case '.': map[b][a] = Cell::Dot;                                break;
-            case 'G': ghost.set_position(CELL_SIZE * b, CELL_SIZE * a);     break;
+            case 'B': Blinky.set_position(CELL_SIZE * b, CELL_SIZE * a);    break;
             case '-': map[b][a] = Cell::Door;                               break;
             case 'e': map[b][a] = Cell::Energizer;                          break;
+            case 'C': Clyde.set_position(CELL_SIZE * b, CELL_SIZE * a);     break;
             default: map[b][a] = Cell::Empty;
             }
         }
@@ -89,7 +90,7 @@ std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> Renderer::map_init(Pacman& p
     return map;
 }
 
-void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score, Ghost& ghost) {
+void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> map, int score, Ghost& Blinky, Ghost& Clyde) {
     // Clear screen
     SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(sdl_renderer);
@@ -143,8 +144,9 @@ void Renderer::render(Pacman& pacman, std::array<std::array<Cell, MAP_HEIGHT>, M
     // Render the score
     render_score(score, 0);
 
-    // Draw Ghost
-    ghost.draw(sdl_renderer);
+    // Draw Ghosts
+    Blinky.draw(sdl_renderer, 1);
+    Clyde.draw(sdl_renderer, 2);
 
     // Update Screen
     SDL_RenderPresent(sdl_renderer);

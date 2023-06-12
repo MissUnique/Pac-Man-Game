@@ -2,12 +2,18 @@
 #include "Game.h"
 
 Ghost::Ghost(Game& g) : game_(g), position({ 0, 0 }), direction(-1), prev_direction(-1),
-    canBeEaten(false), canMove(true), init_pos({ 0, 0 }), isEaten(false) { srand(seed); }
+    canBeEaten(false), canMove(true), init_pos({ 0, 0 }), isEaten(false), target({ 0,0 }),
+    t1_Clyde(std::chrono::high_resolution_clock::now()), status(0) { srand(seed); }
 
-void Ghost::draw(SDL_Renderer* renderer) {
-    if (!canBeEaten)
-        // Set color to red
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+void Ghost::draw(SDL_Renderer* renderer, int id) {
+    if (!canBeEaten) {
+        if (id == 1)
+            // Blinky: Set color to red
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        else
+            // Clyde: Set color to purple
+            SDL_SetRenderDrawColor(renderer, 200, 100, 255, 255);
+    }
     else
         // Set color to blue
         SDL_SetRenderDrawColor(renderer, 0, 0, 128, 255);
@@ -31,7 +37,22 @@ void Ghost::set_position(int x, int y) {
     init_pos = { x, y };
 }
 
-void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_map, Position pacman_pos) {
+void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_map, Position pacman_pos, int id) {
+    if (id == 1)
+        target = pacman_pos;
+    else {
+        std::chrono::high_resolution_clock::time_point t2_Clyde = std::chrono::high_resolution_clock::now();
+        auto duration_Clyde = std::chrono::duration_cast<std::chrono::milliseconds>(t2_Clyde - t1_Clyde).count();
+        if (duration_Clyde > 3000) {
+            if (status)
+                status = false;
+            else
+                status = true;
+            t1_Clyde = std::chrono::high_resolution_clock::now();
+        }
+        if (status)
+            target = pacman_pos;
+    }
     if (canMove) {
         // Collision detection with walls
         bool walls[4] = {};
@@ -51,7 +72,7 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
         }
 
         // If ghost in normal state
-        if (!canBeEaten) {
+        if (!canBeEaten && (target == pacman_pos)) {
             // Using A* search algorithm to hunt Pacman
             std::vector<std::vector<int>> openlist{};
             int ghost_x = position.x / CELL_SIZE;
@@ -61,7 +82,7 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
             int x = position.y / CELL_SIZE;
             int y = position.x / CELL_SIZE;
             int g = 0; // Cost
-            int Heuristic = abs(pacman_pos.x / CELL_SIZE - x) + abs(pacman_pos.y / CELL_SIZE - y); // Calculate the manhattan distance
+            int Heuristic = abs(target.x / CELL_SIZE - x) + abs(target.y / CELL_SIZE - y); // Calculate the manhattan distance
 
             // Create a new grid with cell states
             std::array<std::array<State, MAP_HEIGHT>, MAP_WIDTH> grid{};
@@ -75,8 +96,8 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
                     }
 
             // Because the map is flipped, pacman position coordinates are exchanged
-            int pacmanX = pacman_pos.y / CELL_SIZE;
-            int pacmanY = pacman_pos.x / CELL_SIZE;
+            int pacmanX = target.y / CELL_SIZE;
+            int pacmanY = target.x / CELL_SIZE;
 
             // Add node to open vector, and mark grid cell as closed
             openlist.emplace_back(std::vector<int>{x, y, g, Heuristic, x, y});
@@ -103,7 +124,7 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
                 if (x == pacmanX && y == pacmanY) {
                     // Trace back through the path to get the correct path from ghost to Pacman
                     std::vector<Position> Path;
-                    Path.push_back({ pacman_pos.x, pacman_pos.y }); // Add Pacman's position to the path
+                    Path.push_back({ target.x, target.y }); // Add Pacman's position to the path
                     int xCurrent = x;
                     int yCurrent = y;
                     while (xCurrent != position.y / CELL_SIZE || yCurrent != position.x / CELL_SIZE)
@@ -229,7 +250,7 @@ void Ghost::update(std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& ghost_ma
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - game_.t1).count();
         if (duration < 3000) {
             canBeEaten = true;
-            if (collide_with_pacman(pacman_pos)) {
+            if (collide_with_pacman(target)) {
                 if (!isEaten) {
                     game_.add_score(500);
                     isEaten = true;
