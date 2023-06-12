@@ -1,4 +1,7 @@
 # Pac-Man Game
+
+<img src="Pacman Gameplay.gif"/>
+
  This is the capstone project for Udacity C++ Nanodegree. The code was inspired by [this](https://github.com/Kofybrek/Pacman) creative game repo and [this](https://github.com/udacity/CppND-Capstone-Snake-Game) Udacity 2D Snake game repo. I also found good guidelines from [this](https://lazyfoo.net/tutorials/SDL/) game programming with SDL tutorials and Udacity C++ Nanodegree lessons (especially A* search algorithm).
 
 <img src="Pacman.png"/>
