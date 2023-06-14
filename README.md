@@ -20,12 +20,25 @@ In this project, I built my own C++ application from scratch following the princ
 * SDL_ttf Library: version 2.20.2
   - You can get it from [here](https://github.com/libsdl-org/SDL_ttf/releases)
 
-## Basic Build Instructions
+## Basic Build Instructions (Windows)
 1. Clone this repo.
 2. Open the Visual Studio Solution "Pac-Man.sln"
 3. Make sure all the above-mentioned dependencies are set properly
 4. Build the project (Ctrl + B)
 5. Run the game (Ctrl + F5)
+
+## Basic Build Instructions (Linux)
+1. Clone this repo.
+2. Open (Linux version) folder in Visual Studio Code.
+3. Make sure all the above-mentioned dependencies are set properly.
+  - Install SDL_ttf Library: sudo apt install libsdl2-ttf-dev
+4. Create a build directory.
+  - mkdir build
+  - cd build
+5. Build the game.
+  - cmake .. && make
+6. Run the game.
+  - ./PacManGame
 
 ## Project Structure
 * The source code consists of a main file called "Pac-Man.cpp" along with 4 other classes implemented in both .h and .cpp files.
